@@ -8,6 +8,8 @@
 #include <fstream>
 #include "kalman_filter.h"
 #include "tools.h"
+#include <math.h>
+
 
 class FusionEKF {
 public:
@@ -36,14 +38,22 @@ private:
   bool is_initialized_;
 
   // previous timestamp
-  long long previous_timestamp_;
+  long previous_timestamp_;
+
+  const float noise_ax = 9;
+  const float noise_ay = 9;
 
   // tool object used to compute Jacobian and RMSE
   Tools tools;
+  Eigen::VectorXd x_;
+  Eigen::MatrixXd P_;
+  Eigen::MatrixXd F_;
   Eigen::MatrixXd R_laser_;
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
   Eigen::MatrixXd Hj_;
+  Eigen::MatrixXd Q_;
+
 };
 
 #endif /* FusionEKF_H_ */
