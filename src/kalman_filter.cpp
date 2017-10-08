@@ -53,17 +53,29 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     * update the state by using Extended Kalman Filter equations
   */
     float rho = sqrt(x_(0)*x_(0) + x_(1)*x_(1));
+    if (fabs(rho) < 0.0001) {
+        rho =  0.0001;
+    }
     float phi = atan2(x_(1), x_(0));
     float rho_dot;
-    if (fabs(rho) < 0.0001) {
-        rho_dot = 0;
-    }
-    else {
     rho_dot = (x_(0)*x_(2) + x_(1)*x_(3))/rho;
-    }
+
     VectorXd z_pred(3);
     z_pred << rho, phi, rho_dot;
 	VectorXd y = z - z_pred;
+
+    cout << y << endl;
+
+	if (fabs(y(1)) > 6.2) {
+        if (phi < 0){
+            phi += 2 * M_PI;
+        }
+        else {
+           phi -= 2 * M_PI;
+        }
+        z_pred(1) = phi;
+        y(1) = z(1) - z_pred(1);
+	}
 
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
