@@ -43,7 +43,6 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 	//calculate the squared root
 	rmse = rmse.array().sqrt();
 
-    cout << "rmse" << rmse << endl;
 	//return the result
 	return rmse;
 }
@@ -79,16 +78,4 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 	return Hj;
 }
 
-MatrixXd Tools::CalculateQ(const float ax, const float ay, const long long d_time) {
-    MatrixXd Q(4,4);
 
-    float dt_2 = d_time   * d_time;
-    float dt_3 = dt_2     * d_time;
-    float dt_4 = dt_3     * d_time;
-    Q << dt_4 / 4 * ax, 0, dt_3 / 2 * ax, 0,
-         0, dt_4 / 4 * ay, 0, dt_3 / 2 * ay,
-         dt_3 / 2 * ax, 0, dt_2 * ax, 0,
-         0, dt_3 / 2 * ay, 0, dt_2*ay;
-
-    return Q;
-}

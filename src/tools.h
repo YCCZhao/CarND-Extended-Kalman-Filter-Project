@@ -32,8 +32,6 @@ public:
   /**
   * A helper method to calculate Matrix Q.
   */
-  MatrixXd CalculateQ(const float ax, const float ay, const long long d_time);
-
 };
 
 #endif /* TOOLS_H_ */
